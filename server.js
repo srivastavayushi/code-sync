@@ -3,9 +3,15 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const ACTIONS = require("./src/Actions");
+const path = require("path");
 
 const httpserver = http.createServer(app);
 const io = new Server(httpserver);
+
+app.use(express.static("build"));
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 const PORT = process.env.PORT || 3001;
 
