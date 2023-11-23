@@ -34,7 +34,7 @@ const EditorPage = () => {
       socketRef.current.emit(ACTIONS.JOIN, {
         // eslint-disable-next-line no-undef
         roomId,
-        name: location.state?.username,
+        username: location.state?.username,
       });
 
       // Listening for joined event
@@ -68,6 +68,7 @@ const EditorPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(clients);
   if (!location.state) return <Navigate to="/" />;
 
   return (
@@ -88,7 +89,7 @@ const EditorPage = () => {
         <button className="btn leaveBtn">Leave</button>
       </div>
       <div className="editorWrap">
-        <Editor />
+        <Editor socketRef={socketRef} roomId={roomId} />
       </div>
     </div>
   );

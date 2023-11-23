@@ -50,6 +50,12 @@ io.on("connection", (socket) => {
     });
   });
 
+  // code change listener
+  socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
+    // server also sends code_change event with updated code to all the users in roomId
+    socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+  });
+
   // just before disconnecting
   socket.on("disconnecting", () => {
     // get all the rooms
