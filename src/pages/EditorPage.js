@@ -13,6 +13,7 @@ import {
 
 const EditorPage = () => {
   const socketRef = useRef(null);
+  const codeRef = useRef(null);
   const location = useLocation();
   const { roomId } = useParams();
   const reactNavigator = useNavigate();
@@ -68,7 +69,24 @@ const EditorPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(clients);
+  const copyRoomId = async () => {
+    try {
+      await navigator.clipboard.writeText(roomId);
+      toast.success("ROOM ID has been copied.");
+    } catch (err) {
+      toast.error("Could not copy ROOM ID");
+      console.err(err);
+    }
+  };
+
+  const leaveRoom = async () => {
+    reactNavigator("/");
+  };
+
+  const onCodeChange = (code) => {
+    codeRef.value = code;
+  };
+
   if (!location.state) return <Navigate to="/" />;
 
   return (
@@ -85,11 +103,19 @@ const EditorPage = () => {
             ))}
           </div>
         </div>
-        <button className="btn copyBtn">Copy ROOM ID</button>
-        <button className="btn leaveBtn">Leave</button>
+        <button className="btn copyBtn" onClick={copyRoomId}>
+          Copy ROOM ID
+        </button>
+        <button className="btn leaveBtn" onClick={leaveRoom}>
+          Leave
+        </button>
       </div>
       <div className="editorWrap">
-        <Editor socketRef={socketRef} roomId={roomId} />
+        <Editor
+          socketRef={socketRef}
+          roomId={roomId}
+          onCodeChange={onCodeChange}
+        />
       </div>
     </div>
   );
