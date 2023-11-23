@@ -56,6 +56,12 @@ io.on("connection", (socket) => {
     socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
   });
 
+  // sync code for initial join
+  socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+    // server also sends code_change event with updated code to all the users in roomId
+    io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
+  });
+
   // just before disconnecting
   socket.on("disconnecting", () => {
     // get all the rooms

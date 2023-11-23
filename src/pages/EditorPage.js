@@ -47,6 +47,11 @@ const EditorPage = () => {
             console.log(`${username} joined the roomId : ${roomId}`);
           }
           setClients(clients);
+          console.log(codeRef.current);
+          socketRef.current.emit(ACTIONS.SYNC_CODE, {
+            code: codeRef.current,
+            socketId,
+          });
         }
       );
 
@@ -83,10 +88,6 @@ const EditorPage = () => {
     reactNavigator("/");
   };
 
-  const onCodeChange = (code) => {
-    codeRef.value = code;
-  };
-
   if (!location.state) return <Navigate to="/" />;
 
   return (
@@ -114,7 +115,7 @@ const EditorPage = () => {
         <Editor
           socketRef={socketRef}
           roomId={roomId}
-          onCodeChange={onCodeChange}
+          onCodeChange={(code) => (codeRef.current = code)}
         />
       </div>
     </div>
