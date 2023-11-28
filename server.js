@@ -21,14 +21,14 @@ httpserver.listen(PORT, () =>
 const userSocketMap = {};
 
 function getAllConnectedClients(roomId) {
-  return Array.from(io.sockets.adapter.rooms.get(roomId) || []).map(
-    (socketId) => {
-      return {
-        socketId,
-        username: userSocketMap[socketId],
-      };
-    }
-  );
+  return Array.from(
+    io.sockets.adapter.rooms.get(roomId) || []
+  ).map((socketId) => {
+    return {
+      socketId,
+      username: userSocketMap[socketId],
+    };
+  });
 }
 
 io.on("connection", (socket) => {
